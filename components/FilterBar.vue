@@ -1,101 +1,57 @@
 <template>
-  <v-app-bar>
+  <v-app-bar style="z-index: 401">
     <v-row dense>
       <v-col md="2">
         <v-text-field :label="$t('SEARCH')" dense class="mt-5" solo></v-text-field>
       </v-col>
       <v-col md="2">
-        <v-select class="mt-5" solo dense :label="$t('PROVINCE')" :items="provinceList" item-value="id" v-model="provinceId" @change="setProvince">
-          <template v-slot:item="{ item }">
-            <span> {{ $t(item.name) }} </span>
-          </template>
-          <template v-slot:selection="{ item }">
-            <span> {{ $t(item.name) }} </span>
-          </template>
-        </v-select>
+        <select-province />
       </v-col>
       <v-col md="2">
-        <v-select class="mt-5" solo dense :label="$t('COUNTY')" :items="countyList" item-value="id" v-model="countyId" @change="setCounty">
-          <template v-slot:item="{ item }">
-            <span> {{ $t(item.name) }} </span>
-          </template>
-          <template v-slot:selection="{ item }">
-            <span> {{ $t(item.name) }} </span>
-          </template>
-        </v-select>
+        <select-county />
       </v-col>
       <v-col md="2">
-        <v-select class="mt-5" solo dense :label="$t('SECTION')" :items="sectionList" item-value="id" v-model="sectionId" @change="setSection">
-          <template v-slot:item="{ item }">
-            <span> {{ $t(item.name) }} </span>
-          </template>
-          <template v-slot:selection="{ item }">
-            <span> {{ $t(item.name) }} </span>
-          </template>
-        </v-select>
+        <select-section />
       </v-col>
       <v-col md="2">
-        <v-select class="mt-5" solo dense :label="$t('RURAL')" :items="ruralList" item-value="id" v-model="ruralId" @change="setRural">
-          <template v-slot:item="{ item }">
-            <span> {{ $t(item.name) }} </span>
+        <select-rural />
+      </v-col>
+      <v-col md="2">
+        <v-menu offset-y min-width="300" :close-on-content-click="false">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn class="mt-5" dense v-bind="attrs" v-on="on">{{$t('INFORMATION')}} </v-btn>
           </template>
-          <template v-slot:selection="{ item }">
-            <span> {{ $t(item.name) }} </span>
-          </template>
-        </v-select>
+          <v-list>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-center">{{$t('DEBI')}} </v-list-item-title>
+                <v-list-item-subtitle class="pt-10 px-5">
+                  <v-range-slider thumb-label="always"  v-model="debiRange" max="200" min="0"></v-range-slider>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>        
       </v-col>
     </v-row>
   </v-app-bar>
 </template>
 
 <script>
+import SelectProvince from '@/components/SelectProvince';
+import SelectCounty from '@/components/SelectCounty';
+import SelectSection from '@/components/SelectSection';
+import SelectRural from '@/components/SelectRural';
   export default {
+    components: { SelectProvince, SelectCounty, SelectSection, SelectRural },
     data() {
       return {
-        provinceList: [],
-        countyList: [],
-        sectionList: [],
-        ruralList: [],
-        provinceId: null,
-        countyId: null,
-        sectionId: null,
-        ruralId: null
+        debiRange: [0,200]
       };
     },
-    async fetch() {
-      const {
-        list
-      } = await this.$axios.$get("province/getList");
-      this.provinceList = list;
-    },
+
     methods: {
-      async setProvince() {
-        const {
-          list
-        } = await this.$axios.$get(
-          `county/getByProvinceId/${this.provinceId}`
-        );
-        this.countyList = list;
-      },
-      async setCounty() {
-        const {
-          list
-        } = await this.$axios.$get(
-          `section/getByCountyId/${this.countyId}`
-        );
-        this.sectionList = list;
-      },
-      async setSection() {
-        const {
-          list
-        } = await this.$axios.$get(
-          `ruralDistrict/getBySectionId/${this.sectionId}`
-        );
-        this.ruralList = list;
-      },
-      async setRural() {
-        return
-      }
+
     },
   };
 

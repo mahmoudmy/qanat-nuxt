@@ -6,17 +6,12 @@
         <v-tabs vertical>
           <v-tab>
             <v-icon>
-              mdi-account
+              mdi-group
             </v-icon>
           </v-tab>
           <v-tab>
             <v-icon>
-              mdi-lock
-            </v-icon>
-          </v-tab>
-          <v-tab>
-            <v-icon>
-              mdi-access-point
+              mdi-layers
             </v-icon>
           </v-tab>
 
@@ -114,6 +109,6 @@ export default {
 
 <style scoped>
 #map {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 128px);
 }
 </style>
